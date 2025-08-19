@@ -1,0 +1,14 @@
+package com.br.api.forum_hub.dto;
+
+import java.util.List;
+
+import com.br.api.forum_hub.model.Resposta;
+import com.br.api.forum_hub.model.Topico;
+
+public record SalvarTopicoDTO(Long id, String titulo, String mensagem, String autor, String curso, List<Resposta> respostas) {
+	
+	public SalvarTopicoDTO(Topico topico) {
+		this(topico.getId(), topico.getTitulo(), topico.getMensagem(), topico.getAutor(), topico.getCurso(), topico.getRespostas());
+	}
+
+}

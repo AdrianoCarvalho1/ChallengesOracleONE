@@ -1,0 +1,76 @@
+package com.br.api.forum_hub.service;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import com.br.api.forum_hub.config.ConversorDTO;
+import com.br.api.forum_hub.config.exception.TopicoNaoEncontradoException;
+import com.br.api.forum_hub.dto.ListagemTopicoDTO;
+import com.br.api.forum_hub.dto.SalvarTopicoDTO;
+import com.br.api.forum_hub.dto.TopicoResponseDTO;
+import com.br.api.forum_hub.model.Topico;
+import com.br.api.forum_hub.repository.ITopicoRepository;
+
+import jakarta.validation.Valid;
+
+@Service
+public class TopicoService {
+	
+	private final ITopicoRepository repository;
+	private final ConversorDTO conversorDTO;
+
+	@Autowired
+	public TopicoService(ITopicoRepository topicoRepository, ConversorDTO conversorDTO) {
+		this.repository = topicoRepository;
+		this.conversorDTO = conversorDTO;
+	}
+
+
+	public TopicoResponseDTO salvarTopico(SalvarTopicoDTO salvarTopicoDTO) {
+		Topico topico = conversorDTO.toEntity(salvarTopicoDTO);
+		Topico topicoSalvo = repository.save(topico);
+		return conversorDTO.toDto(topicoSalvo);
+	}
+	
+	public Page<ListagemTopicoDTO> listarTopico(Pageable paginacao){
+		return repository.findAll(paginacao).map(ListagemTopicoDTO::new);
+	}
+	
+	public Optional<ListagemTopicoDTO> listarTopicoId(Long id) {
+		return repository.findById(id)
+				.map(conversorDTO -> new ListagemTopicoDTO(
+						conversorDTO.getId(),
+						conversorDTO.getTitulo(), 
+						conversorDTO.getMensagem(), 
+						conversorDTO.getDataCriacao(), 
+						conversorDTO.getStatus(), 
+						conversorDTO.getAutor(), 
+						conversorDTO.getCurso()));
+	}
+
+
+	public TopicoResponseDTO atualizarTopico(Long id, @Valid SalvarTopicoDTO salvarTopicoDTO) {
+	
+		Optional<Topico> topicoExistente = repository.findById(id);
+		if(topicoExistente.isPresent()) {
+			Topico topico = topicoExistente.get();
+			topico.setTitulo(salvarTopicoDTO.titulo());
+			topico.setMensagem(salvarTopicoDTO.mensagem());
+			topico.setAutor(salvarTopicoDTO.autor());
+			topico.setCurso(salvarTopicoDTO.curso());
+			
+			Topico topicoSalvo = repository.save(topico);
+			
+			return conversorDTO.toDto(topicoSalvo);
+			}
+		
+		 throw new TopicoNaoEncontradoException("Tópico não foi encontrado!");
+		
+	}
+}

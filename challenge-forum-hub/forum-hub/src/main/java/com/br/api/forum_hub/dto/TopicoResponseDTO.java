@@ -1,0 +1,30 @@
+package com.br.api.forum_hub.dto;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import com.br.api.forum_hub.enums.Status;
+import com.br.api.forum_hub.model.Topico;
+
+public record TopicoResponseDTO (
+		Long id,
+		String titulo,
+		String mensagem,
+		LocalDateTime dataCriacao,
+		String autor,
+		String curso,
+		Status status,
+		List<RespostaDTO> respostas){
+
+	public TopicoResponseDTO(Topico topico) {
+		this(
+			topico.getId(),
+			topico.getTitulo(),
+			topico.getMensagem(),
+			topico.getDataCriacao(),
+			topico.getAutor(),
+			topico.getCurso(),
+			topico.getStatus(),
+			topico.getRespostas().stream().map(RespostaDTO::new).toList());
+	}
+}

@@ -1,0 +1,26 @@
+package com.br.api.forum_hub.service;
+
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
+import com.br.api.forum_hub.repository.IUsuarioRepository;
+
+@Service
+public class AutenticacaoService implements UserDetailsService{
+
+	private IUsuarioRepository repository;
+	
+	public AutenticacaoService(IUsuarioRepository repository) {
+		this.repository = repository;
+	}
+	
+	@Override
+	public UserDetails loadUserByUsername(String username){
+		return repository.findByEmail(username)
+				.orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado!"));
+				
+	}
+	
+}

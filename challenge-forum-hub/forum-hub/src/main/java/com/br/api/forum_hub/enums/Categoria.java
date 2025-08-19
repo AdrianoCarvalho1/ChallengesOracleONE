@@ -1,0 +1,6 @@
+package com.br.api.forum_hub.enums;
+
+public enum Categoria {
+	DUVIDAS,
+	RESPOSTAS
+}

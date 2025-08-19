@@ -1,0 +1,15 @@
+package com.br.api.forum_hub.dto;
+
+import java.time.LocalDateTime;
+
+import com.br.api.forum_hub.enums.Status;
+
+public record ListagemTopicoDTO(
+		String titulo,
+		String mensagem,
+		LocalDateTime dataCriacao,
+		Status status,
+		String autor,
+		String curso) {
+
+}

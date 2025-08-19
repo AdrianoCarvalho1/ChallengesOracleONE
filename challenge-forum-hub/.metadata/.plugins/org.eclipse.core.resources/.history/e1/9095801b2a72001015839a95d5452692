@@ -1,0 +1,44 @@
+package com.br.api.forum_hub.controller;
+
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.br.api.forum_hub.dto.ListagemTopicoDTO;
+import com.br.api.forum_hub.dto.SalvarTopicoDTO;
+import com.br.api.forum_hub.dto.TopicoResponseDTO;
+import com.br.api.forum_hub.repository.ITopicoRepository;
+import com.br.api.forum_hub.service.TopicoService;
+
+import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
+
+@RestController
+@RequestMapping("topicos")
+public class TopicoController {
+	private final TopicoService topicoService;
+	private final ITopicoRepository repository;
+	
+	public TopicoController(TopicoService topicoService, ITopicoRepository repository) {
+		this.topicoService = topicoService;
+		this.repository = repository;
+	}
+	
+	@PostMapping("register-topic")
+	@Transactional
+	public ResponseEntity<TopicoResponseDTO> criarTopico(
+			@Valid @RequestBody SalvarTopicoDTO salvarTopicoDTO){
+
+			return ResponseEntity.ok(topicoService.salvarTopico(salvarTopicoDTO));
+	}
+
+	@GetMapping("/listagem")
+	public List<ListagemTopicoDTO> listarTopico(){
+		return repository.findAll().stream().map(ListagemTopicoDTO::new).toList();
+	}
+}

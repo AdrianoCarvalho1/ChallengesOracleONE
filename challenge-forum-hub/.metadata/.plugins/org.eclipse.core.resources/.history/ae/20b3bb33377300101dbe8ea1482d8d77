@@ -1,0 +1,8 @@
+package com.br.api.forum_hub.dto;
+
+public record AutenticacaoDTO(
+		String nome,
+		String email,
+		String senha) {
+
+}

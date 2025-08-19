@@ -1,0 +1,5 @@
+package com.br.api.forum_hub.repository;
+
+public interface IUsuarioRepository {
+
+}

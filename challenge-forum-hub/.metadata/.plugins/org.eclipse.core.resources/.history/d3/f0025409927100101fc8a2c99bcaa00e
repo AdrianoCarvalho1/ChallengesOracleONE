@@ -1,0 +1,22 @@
+package com.br.api.forum_hub.dto;
+
+import com.br.api.forum_hub.model.Topico;
+
+public record SalvarTopicoDTO(
+		@NotBlank(message = "Título é obrigatório")
+		@Size(min = 5, maz = 100, message = "Título deve ter entre 5 e 100 caracteres")
+		String titulo,
+		
+		String mensagem, 
+		String autor, 
+		String curso) {
+	
+	public SalvarTopicoDTO(Topico topico) {
+		this(
+				topico.getTitulo(), 
+				topico.getMensagem(), 
+				topico.getAutor(), 
+				topico.getCurso());
+	}
+
+}

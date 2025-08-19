@@ -1,0 +1,31 @@
+package com.br.api.forum_hub.config;
+
+import org.springframework.stereotype.Component;
+
+import com.br.api.forum_hub.dto.SalvarTopicoDTO;
+import com.br.api.forum_hub.model.Topico;
+
+@Component
+public class ConversorDTO {
+	
+	public Topico entityToDto(SalvarTopicoDTO salvarTopicoDTO) {
+		var topico = new Topico();
+		topico.setId(salvarTopicoDTO.id());
+		topico.setTitulo(salvarTopicoDTO.titulo());
+		topico.setMensagem(salvarTopicoDTO.mensagem());
+		topico.setCurso(salvarTopicoDTO.curso());
+		topico.setRespostas(salvarTopicoDTO.respostas());
+		return topico;
+	}
+	
+	public SalvarTopicoDTO dtoToEntity(Topico topico) {
+		var convertTopico = new SalvarTopicoDTO();
+		convertTopico.id(topico.getId());
+		convertTopico.titulo(topico.getTitulo());
+		convertTopico.mensagem(topico.getMensagem());
+		convertTopico.curso(topico.getCurso());
+		convertTopico.respostas(topico.getRespostas());
+		return convertTopico;
+	}
+
+}

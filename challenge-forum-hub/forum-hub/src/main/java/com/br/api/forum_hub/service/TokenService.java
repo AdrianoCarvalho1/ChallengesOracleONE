@@ -1,0 +1,53 @@
+package com.br.api.forum_hub.service;
+
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.br.api.forum_hub.model.Usuario;
+
+@Service
+public class TokenService {
+	@Value("${api.security.token.secret}")
+	private String secret;
+	
+	public String gerarToken(Usuario usuario) {
+		String token = secret;
+		DecodedJWT decodedJWT;
+		try {
+		    var algoritimo = Algorithm.HMAC256(secret);
+		    	return JWT.create()
+		    			.withIssuer("API Forum_Hub")
+		    			.withSubject(usuario.getEmail())
+		    			.withExpiresAt(dataExpiracao())
+		    			.sign(algoritimo);
+		} catch (JWTVerificationException exception){
+		    throw new RuntimeException("Erro ao gerar token jwt", exception);
+		}
+		
+	}
+	
+	public String getSubject(String tokenJWT) {
+        try {
+            var algoritmo = Algorithm.HMAC256(secret);
+            return JWT.require(algoritmo)
+                    .withIssuer("API Forum_Hub")
+                    .build()
+                    .verify(tokenJWT)
+                    .getSubject();
+        } catch (JWTVerificationException exception) {
+            throw new RuntimeException("Token JWT inválido ou expirado!");
+        }
+    }
+    private Instant dataExpiracao() {
+        return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
+    }
+
+}

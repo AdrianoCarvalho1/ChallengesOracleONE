@@ -1,0 +1,38 @@
+package com.br.api.forum_hub.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.br.api.forum_hub.dto.AutenticacaoDTO;
+import com.br.api.forum_hub.model.Usuario;
+import com.br.api.forum_hub.service.TokenService;
+
+import jakarta.validation.Valid;
+
+@RestController
+@RequestMapping("/login")
+public class AutenticacaoController {
+	
+	@Autowired
+	private AuthenticationManager manager;
+	@Autowired
+	private TokenService tokenService;
+
+	@PostMapping
+	public ResponseEntity efetuarLogin(@RequestBody @Valid AutenticacaoDTO dto){
+		var authenticationToken = new UsernamePasswordAuthenticationToken(dto.email(), dto.senha());
+		var authetication = manager.authenticate(authenticationToken);
+		
+		var tokenJWT = tokenService.gerarToken((Usuario) authetication.getPrincipal()) ;
+		System.out.println(authetication);
+		System.out.println(tokenJWT);
+		
+		return ResponseEntity.ok(tokenJWT);
+	}
+}

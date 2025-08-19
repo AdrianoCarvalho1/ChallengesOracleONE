@@ -1,0 +1,17 @@
+package com.br.api.forum_hub.dto;
+
+import java.time.LocalDateTime;
+
+import com.br.api.forum_hub.model.Resposta;
+
+public record RespostaDTO(
+		Long id,
+		String mensagem,
+		LocalDateTime dataCriacao,
+		String autor,
+		String solucao) 
+{
+	public RespostaDTO(Resposta resposta) {
+		this(resposta.getId(), resposta.getMensagem(), resposta.getDataCriacao(), resposta.getAutor(), resposta.getSolucao());
+	}
+}

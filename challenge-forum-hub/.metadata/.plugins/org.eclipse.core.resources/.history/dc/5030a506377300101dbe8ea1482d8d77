@@ -1,0 +1,5 @@
+package com.br.api.forum_hub.controller;
+
+public record autenticacaoDTO() {
+
+}

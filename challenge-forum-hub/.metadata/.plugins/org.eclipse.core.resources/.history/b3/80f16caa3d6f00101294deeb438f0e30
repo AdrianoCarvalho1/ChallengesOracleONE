@@ -1,0 +1,34 @@
+package com.br.api.forum_hub.model;
+
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of = "id")
+@Entity
+@Table(name = "resposta")
+public class Resposta {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	private String mensagem;
+	@Column(columnDefinition = "data-criacao")
+	private LocalDateTime dataCriacao = LocalDateTime.now();
+	private String autor;
+	private String solucao;
+	private Topico topico;
+
+}

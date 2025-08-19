@@ -1,0 +1,34 @@
+package com.br.api.forum_hub.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.br.api.forum_hub.config.ConversorDTO;
+import com.br.api.forum_hub.dto.SalvarTopicoDTO;
+import com.br.api.forum_hub.dto.TopicoResponseDTO;
+import com.br.api.forum_hub.model.Topico;
+import com.br.api.forum_hub.repository.ITopicoRepository;
+
+@Service
+public class TopicoService {
+	
+	private final ITopicoRepository topicoRepository;
+	private final ConversorDTO conversorDTO;
+
+	@Autowired
+	public TopicoService(ITopicoRepository topicoRepository, ConversorDTO conversorDTO) {
+		this.topicoRepository = topicoRepository;
+		this.conversorDTO = conversorDTO;
+	}
+
+
+
+
+	public TopicoResponseDTO salvarTopico(SalvarTopicoDTO salvarTopicoDTO) {
+		Topico topico = conversorDTO.toEntity(salvarTopicoDTO);
+		Topico topicoSalvo = topicoRepository.save(topico);
+		return conversorDTO.toDto(topicoSalvo);
+	}
+	
+	
+}

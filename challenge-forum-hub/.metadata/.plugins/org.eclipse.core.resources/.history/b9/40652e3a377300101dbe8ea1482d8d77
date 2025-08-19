@@ -1,0 +1,19 @@
+package com.br.api.forum_hub.controller;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.br.api.forum_hub.dto.autenticacaoDTO;
+
+import jakarta.validation.Valid;
+
+@RestController
+@RequestMapping("/login")
+public class AutenticacaoController {
+
+	public ResponseEntity<T> efetuarLogin(@RequestBody @Valid AutenticacaoDTO dto){
+		
+	}
+}

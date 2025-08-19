@@ -1,0 +1,18 @@
+package com.br.api.forum_hub.service;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import com.br.api.forum_hub.model.Usuario;
+
+@Service
+public class TokenService {
+	@Value("${api.security.token.secret}")
+	private String secret;
+	
+	public void gerarToken(Usuario usuario) {
+		System.out.println("Token seguro");
+		
+	}
+
+}

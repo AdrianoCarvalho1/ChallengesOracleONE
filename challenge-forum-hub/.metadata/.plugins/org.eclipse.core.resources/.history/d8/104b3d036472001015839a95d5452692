@@ -1,0 +1,8 @@
+package com.br.api.forum_hub.config.exception;
+
+public class TopicoNaoEncontradoException extends RuntimeException {
+	public TopicoNaoEncontradoException(String mensagem) {
+		super(mensagem);
+	}
+
+}
